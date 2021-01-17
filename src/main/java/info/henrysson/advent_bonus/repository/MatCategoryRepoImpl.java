@@ -1,6 +1,5 @@
 package info.henrysson.advent_bonus.repository;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import info.henrysson.advent_bonus.config.AdventBonusConfig;
 import info.henrysson.advent_bonus.model.City;
@@ -27,16 +26,14 @@ public class MatCategoryRepoImpl implements MatCategoryRepo {
         Files.createDirectories(Paths.get(this.categoriesPath));
     }
 
+    @Override
     public MatCategory getCategories(City city) throws IOException {
         Path path = Paths.get(String.format("%s/%s.json", categoriesPath, city.toString()));
         if (!path.toFile().exists()) {
             RestTemplate restTemplate = new RestTemplate();
-            String response = restTemplate.getForObject( city.getUrl(), String.class);
+            String response = restTemplate.getForObject(city.getUrl(), String.class);
             Files.writeString(path, response);
         }
-        JsonNode jn = mapper.readValue(path.toFile(), JsonNode.class);
-        System.out.println(jn.asText());
-        return null;
-//        return mapper.readValue(path.toFile(), MatCategory.class);
+        return mapper.readValue(path.toFile(), MatCategory.class);
     }
 }

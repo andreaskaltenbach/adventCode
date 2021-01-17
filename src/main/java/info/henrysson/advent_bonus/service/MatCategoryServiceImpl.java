@@ -1,6 +1,5 @@
 package info.henrysson.advent_bonus.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import info.henrysson.advent_bonus.model.City;
 import info.henrysson.advent_bonus.model.MatCategory;
 import info.henrysson.advent_bonus.repository.MatCategoryRepo;
@@ -11,15 +10,14 @@ import java.io.IOException;
 
 @Service
 public class MatCategoryServiceImpl implements MatCategoryService {
-    private MatCategoryRepo matCategoryRepo;
+    private final MatCategoryRepo matCategoryRepo;
 
     @Autowired
     public MatCategoryServiceImpl(MatCategoryRepo matCategoryRepo) {
         this.matCategoryRepo = matCategoryRepo;
     }
 
-    public MatCategory getCategoryTree() throws IOException {
-        MatCategory mc = matCategoryRepo.getCategories(City.GOTHENBURG);
-        return null;
+    public MatCategory getCategoryTree(City city) throws IOException {
+        return matCategoryRepo.getCategories(city);
     }
 }

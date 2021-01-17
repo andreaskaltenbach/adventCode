@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface MatProductRepo {
-    List<MatProduct> getProducts(int categoryId) throws IOException;
+    List<MatProduct> getProducts(long categoryId) throws IOException;
 }

@@ -31,7 +31,7 @@ public class MatProductRepoImpl implements MatProductRepo {
     }
 
     @Override
-    public List<MatProduct> getProducts(int categoryId) throws IOException {
+    public List<MatProduct> getProducts(long categoryId) throws IOException {
         Path path = Paths.get(String.format("%s/%s.json", productsPath, categoryId));
         if (!path.toFile().exists()) {
             RestTemplate restTemplate = new RestTemplate();

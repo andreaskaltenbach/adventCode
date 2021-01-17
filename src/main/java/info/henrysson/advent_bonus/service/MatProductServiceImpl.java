@@ -18,7 +18,7 @@ public class MatProductServiceImpl implements MatProductService {
     }
 
     @Override
-    public List<MatProduct> getCategoryProducts(int categoryId) throws IOException {
+    public List<MatProduct> getCategoryProducts(long categoryId) throws IOException {
         return matProductRepo.getProducts(categoryId);
     }
 }

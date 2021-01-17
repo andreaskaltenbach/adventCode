@@ -29,6 +29,8 @@ public class DoStuff {
         System.out.println("Doing stuff");
         MatCategory m = matCategoryService.getCategoryTree(City.GOTHENBURG);
         List<MatProduct> p = matProductService.getCategoryProducts(6830);
+        List<MatProduct> mp = m.getProducts();
+        System.out.println(mp.size());
         System.out.println("Stuff done");
     }
 }

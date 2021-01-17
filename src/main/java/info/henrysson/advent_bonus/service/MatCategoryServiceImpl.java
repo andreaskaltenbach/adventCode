@@ -11,13 +11,24 @@ import java.io.IOException;
 @Service
 public class MatCategoryServiceImpl implements MatCategoryService {
     private final MatCategoryRepo matCategoryRepo;
+    private final MatProductService matProductService;
 
     @Autowired
-    public MatCategoryServiceImpl(MatCategoryRepo matCategoryRepo) {
+    public MatCategoryServiceImpl(MatCategoryRepo matCategoryRepo, MatProductService matProductService) {
         this.matCategoryRepo = matCategoryRepo;
+        this.matProductService = matProductService;
     }
 
     public MatCategory getCategoryTree(City city) throws IOException {
-        return matCategoryRepo.getCategories(city);
+        MatCategory mcTree = matCategoryRepo.getCategories(city);
+        addProducts(mcTree);
+        return mcTree;
+    }
+
+    private void addProducts(MatCategory matCategory) throws IOException {
+        matCategory.setProducts(matProductService.getCategoryProducts(matCategory.getId()));
+        for (MatCategory mc : matCategory.getSubCategories()) {
+            addProducts(mc);
+        }
     }
 }

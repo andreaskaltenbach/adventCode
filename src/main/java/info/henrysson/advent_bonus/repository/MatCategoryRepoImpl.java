@@ -20,6 +20,9 @@ public class MatCategoryRepoImpl implements MatCategoryRepo {
     private final String categoriesPath;
 
     @Autowired
+    RestTemplate restTemplate;
+
+    @Autowired
     public MatCategoryRepoImpl(AdventBonusConfig config) throws IOException {
         this.config = config;
         this.categoriesPath = String.format("%s/categories", config.getFileRepoDir());
@@ -30,7 +33,6 @@ public class MatCategoryRepoImpl implements MatCategoryRepo {
     public MatCategory getCategories(City city) throws IOException {
         Path path = Paths.get(String.format("%s/%s.json", categoriesPath, city.toString()));
         if (!path.toFile().exists()) {
-            RestTemplate restTemplate = new RestTemplate();
             String response = restTemplate.getForObject(city.getUrl(), String.class);
             Files.writeString(path, response);
         }

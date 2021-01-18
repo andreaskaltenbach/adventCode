@@ -8,7 +8,9 @@ import lombok.Data;
 public class MatProduct {
     private long id;
     private String name;
-    private String showPrice;
     private Boolean active;
-    private float price;
+    private double priceWithoutVat;
+    private String countryOfOrigin;
+    private long soldCount;
+    // What does sameContentProductIds and productVarieties mean? Should they be grouped in some way?
 }

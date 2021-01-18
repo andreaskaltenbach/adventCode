@@ -19,6 +19,7 @@ public class MatCategoryServiceImpl implements MatCategoryService {
         this.matProductService = matProductService;
     }
 
+    @Override
     public MatCategory getCategoryTree(City city) throws IOException {
         MatCategory mcTree = matCategoryRepo.getCategories(city);
         addProducts(mcTree);

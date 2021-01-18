@@ -6,6 +6,7 @@ import info.henrysson.advent_bonus.config.AdventBonusConfig;
 import info.henrysson.advent_bonus.model.MatCategory;
 import info.henrysson.advent_bonus.model.MatProduct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,25 +18,28 @@ import java.util.List;
 
 @Service
 public class MatProductRepoImpl implements MatProductRepo {
-    static final String PRODUCTS_URL = "https://mat.se/api/product/listByCategory?categoryId=%s";
-
     private final AdventBonusConfig config;
     private final ObjectMapper mapper = new ObjectMapper();
     private final String productsPath;
+    private final String productsUrl;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     public MatProductRepoImpl(AdventBonusConfig config) throws IOException {
         this.config = config;
         this.productsPath = String.format("%s/products", config.getFileRepoDir());
+        this.productsUrl = config.getUrlProducts() + "?categoryId=%s";
         Files.createDirectories(Paths.get(this.productsPath));
     }
 
     @Override
+    // TODO: Fetches at most 1000 entries? How to get the rest?
     public List<MatProduct> getProducts(long categoryId) throws IOException {
         Path path = Paths.get(String.format("%s/%s.json", productsPath, categoryId));
         if (!path.toFile().exists()) {
-            RestTemplate restTemplate = new RestTemplate();
-            String response = restTemplate.getForObject(String.format(PRODUCTS_URL, categoryId), String.class);
+            String response = restTemplate.getForObject(String.format(productsUrl, categoryId), String.class);
             Files.writeString(path, response);
         }
         return mapper.readValue(path.toFile(), new TypeReference<List<MatProduct>>(){});
